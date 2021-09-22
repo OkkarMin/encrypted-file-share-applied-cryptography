@@ -8,17 +8,26 @@ app.set("port", PORT);
 let http = require("http").Server(app);
 // set up socket.io and bind it to our
 // http server.
-let io = require("socket.io")(http);
+let io = require("socket.io")(http, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+    },
+});
 app.get("/", (req, res) => {
     res.sendFile(path.resolve("./client/index.html"));
 });
-// whenever a user connects on port 3000 via
-// a websocket, log that a user has connected
-io.on("connection", function (socket) {
-    console.log("a user connected");
-    // whenever we receive a 'message' we log it out
-    socket.on("message", function (message) {
-        console.log(message);
+io.on("connection", (socket) => {
+    console.log(`Connected: ${socket.id}`);
+    socket.on("disconnect", () => console.log(`Disconnected: ${socket.id}`));
+    socket.on("join", (room) => {
+        console.log(`Socket ${socket.id} joining ${room}`);
+        socket.join(room);
+    });
+    socket.on("chat", (data) => {
+        const { message, room } = data;
+        console.log(`msg: ${message}, room: ${room}`);
+        io.to(room).emit("chat", message);
     });
 });
 const server = http.listen(PORT, function () {

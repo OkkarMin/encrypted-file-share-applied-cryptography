@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 
 const Index = () => (
@@ -6,6 +7,10 @@ const Index = () => (
 
     <Button colorScheme="whatsapp">To Send File</Button>
     <Button colorScheme="linkedin">To Receive File</Button>
+
+    <Link href="/chat">
+      <Button colorScheme="pink">To Chat Page</Button>
+    </Link>
   </VStack>
 );
 
