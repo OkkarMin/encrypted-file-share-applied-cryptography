@@ -29,7 +29,7 @@ At this point there is two app you need to run
 
 you need to open two terminals
 
-### 1. Start socket-server
+### 1. socket-server
 
 ```bash
 cd socket-server
