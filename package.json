@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev:socket-server": "cd socket-server && npm run watch",
+    "dev:nextjs-client": "cd nextjs-client && npm run dev",
+    "dev": "npm-run-all --print-label --parallel dev:**"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

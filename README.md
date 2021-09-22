@@ -19,30 +19,14 @@ cd encrypted-file-share-applied-cryptography
 Install dependencies
 
 ```bash
-npm install
+cd socket-server && npm install && cd ../nextjs-client && npm install && cd ..
 ```
 
-At this point there is two app you need to run
-
-1. socket-server and
-2. nextjs client
-
-you need to open two terminals
-
-### 1. socket-server
+Run command below to run both socket-server and nextjs-client
 
 ```bash
-cd socket-server
-npm run watch
-```
-
-Go to http://localhost:2000 to check socket-server is running
-
-### 2. nextjs-client
-
-```bash
-cd nextjs-client
 npm run dev
 ```
 
-Go to http://localhost:3000 to check NextJs is running
+- nextjs-client : http://localhost:3000
+- socket-sever : http://localhost:2000
