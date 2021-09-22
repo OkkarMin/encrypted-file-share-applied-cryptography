@@ -25,9 +25,9 @@ const Chat = () => {
   useEffect(() => {
     if (room) initiateSocket(room);
 
-    subscribeToChat((err: any, msg: string) => {
+    subscribeToChat((err: any, message: string) => {
       if (err) return;
-      setChat((oldChats) => [msg, ...oldChats]);
+      setChat((oldChats) => [message, ...oldChats]);
     });
 
     return () => {
