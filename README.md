@@ -7,7 +7,7 @@ Proof-of-concept application built using NextJS, Express and SocketIO to enable 
 Clone the project
 
 ```bash
-git clone https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/tree/main
+git clone https://github.com/OkkarMin/encrypted-file-share-applied-cryptography
 ```
 
 Go to the project directory
