@@ -29,4 +29,4 @@ npm run dev
 ```
 
 - nextjs-client : http://localhost:3000
-- socket-sever : http://localhost:2000
+- socket-server : http://localhost:2000
