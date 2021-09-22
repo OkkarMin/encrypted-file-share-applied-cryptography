@@ -19,7 +19,7 @@ cd encrypted-file-share-applied-cryptography
 Install dependencies
 
 ```bash
-cd socket-server && npm install && cd ../nextjs-client && npm install && cd ..
+cd socket-server && npm install && cd ../nextjs-client && npm install && cd .. && npm install
 ```
 
 Run command below to run both socket-server and nextjs-client
