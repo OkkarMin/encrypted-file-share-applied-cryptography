@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const path = require("path");
+const PORT = process.env.PORT || 2000;
 const app = express();
-app.set("port", process.env.PORT || 3000);
+app.set("port", PORT);
 let http = require("http").Server(app);
 // set up socket.io and bind it to our
 // http server.
@@ -20,7 +21,7 @@ io.on("connection", function (socket) {
         console.log(message);
     });
 });
-const server = http.listen(3000, function () {
-    console.log("listening on *:3000");
+const server = http.listen(PORT, function () {
+    console.log(`listening on *:${PORT}`);
 });
 //# sourceMappingURL=server.js.map
