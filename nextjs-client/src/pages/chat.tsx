@@ -5,7 +5,7 @@ import {
   subscribeToChat,
   sendMessage,
   setKey,
-} from "../hooks/useSocket";
+} from "../utils/socket";
 
 import {
   Container,

@@ -1,5 +1,5 @@
 import io, { Socket } from "socket.io-client";
-import { encrypt, decrypt } from "../utils/cryptography";
+import { encrypt, decrypt } from "./cryptography";
 
 let socket: Socket;
 let key: string = "defaultKey";
