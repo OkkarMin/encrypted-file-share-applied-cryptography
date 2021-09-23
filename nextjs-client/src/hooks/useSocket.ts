@@ -2,6 +2,9 @@ import io, { Socket } from "socket.io-client";
 import { encrypt, decrypt } from "../utils/cryptography";
 
 let socket: Socket;
+let key: string = "defaultKey";
+
+export const setKey = (newKey: string) => (key = newKey);
 
 export const initiateSocket = (room: string) => {
   socket = io("http://localhost:2000");
@@ -19,17 +22,17 @@ export const disconnectSocket = () => {
 export const subscribeToChat = (cb: Function) => {
   if (!socket) return true;
 
-  socket.on("chat", (message: string) => {
+  socket.on("chat", (cipherText: string) => {
     console.log("Websocket event received!");
 
-    const plainText = decrypt(message, "hardCodedKey");
-    return cb(null, plainText); // cb(error, message)
+    const plainText = decrypt(cipherText, key);
+    return plainText ? cb(null, plainText) : cb(null, cipherText); // cb(error, message)
   });
 };
 
 export const sendMessage = (room: string, message: string) => {
   if (!socket) return true;
 
-  const cipherText = encrypt(message, "hardCodedKey");
+  const cipherText = encrypt(message, key);
   socket.emit("chat", { message: cipherText, room });
 };

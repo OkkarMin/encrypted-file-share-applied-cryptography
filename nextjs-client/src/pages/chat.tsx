@@ -4,6 +4,7 @@ import {
   disconnectSocket,
   subscribeToChat,
   sendMessage,
+  setKey,
 } from "../hooks/useSocket";
 
 import {
@@ -20,6 +21,7 @@ const Chat = () => {
   const rooms = ["1", "2", "3"];
   const [room, setRoom] = useState(rooms[0]);
   const [message, setMessage] = useState("");
+  const [cipherKey, setCipherKey] = useState("");
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
@@ -35,6 +37,10 @@ const Chat = () => {
     };
   }, [room]);
 
+  useEffect(() => {
+    setKey(cipherKey);
+  }, [cipherKey]);
+
   const handleSendMessage = () => {
     sendMessage(room, message);
     setMessage("");
@@ -45,12 +51,19 @@ const Chat = () => {
       <Heading>Current Room: {room}</Heading>
 
       <HStack>
-        <Text>Click button to select room:</Text>
+        <Text>Select room:</Text>
         {rooms.map((r, i) => (
           <Button onClick={() => setRoom(r)} key={i}>
             {r}
           </Button>
         ))}
+        <Input
+          type="text"
+          name="key"
+          value={cipherKey}
+          placeholder="Enter key for cipher"
+          onChange={(e) => setCipherKey(e.target.value)}
+        />
       </HStack>
 
       <Heading>Live Chat:</Heading>
