@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 const Chat = () => {
-  const rooms = [1, 2, 3];
+  const rooms = ["1", "2", "3"];
   const [room, setRoom] = useState(rooms[0]);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);

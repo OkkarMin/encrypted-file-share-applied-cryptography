@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as socketio from "socket.io";
+import { Socket } from "socket.io";
 import * as path from "path";
 
 const PORT = process.env.PORT || 2000;
@@ -21,12 +21,12 @@ app.get("/", (req: any, res: any) => {
   res.sendFile(path.resolve("./client/index.html"));
 });
 
-io.on("connection", (socket: any) => {
+io.on("connection", (socket: Socket) => {
   console.log(`Connected: ${socket.id}`);
 
   socket.on("disconnect", () => console.log(`Disconnected: ${socket.id}`));
 
-  socket.on("join", (room: number) => {
+  socket.on("join", (room: string) => {
     console.log(`Socket ${socket.id} joining ${room}`);
     socket.join(room);
   });
