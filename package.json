@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "installDeps": "cd socket-server && npm install && cd ../nextjs-client && npm install && cd .. && npm install",
     "dev:socket-server": "cd socket-server && npm run watch",
     "dev:nextjs-client": "cd nextjs-client && npm run dev",
     "dev": "npm-run-all --print-label --parallel dev:**"
