@@ -6,11 +6,13 @@ let socket: Socket;
 export const initiateSocket = (room: string) => {
   socket = io("http://localhost:2000");
   console.log(`Connecting socket...`);
+
   if (socket && room) socket.emit("join", room);
 };
 
 export const disconnectSocket = () => {
   console.log("Disconnecting socket...");
+
   if (socket) socket.disconnect();
 };
 
@@ -19,8 +21,8 @@ export const subscribeToChat = (cb: Function) => {
 
   socket.on("chat", (message: string) => {
     console.log("Websocket event received!");
-    const plainText = decrypt(message, "hardCodedKey");
 
+    const plainText = decrypt(message, "hardCodedKey");
     return cb(null, plainText); // cb(error, message)
   });
 };
