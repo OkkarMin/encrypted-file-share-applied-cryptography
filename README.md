@@ -33,7 +33,7 @@ npm run dev
 
 ## To Automatically Generate Changelog
 
-We are following [Conventional Commits](https://conventionalcommits.org/) and [standart-versino](https://github.com/conventional-changelog/standard-version) to help us automatically generate Changelog.
+We are following [Conventional Commits](https://conventionalcommits.org/) and [standart-version](https://github.com/conventional-changelog/standard-version) to help us automatically generate Changelog.
 
 Run the following command to generate Changelog
 
