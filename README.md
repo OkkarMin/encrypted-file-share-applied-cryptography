@@ -2,15 +2,16 @@
 
 <details open>
     <summary>Table of Contents</summary>
-
-    * [Demo](#demo)
-    * [Run Locally](#run-locally)
-    * [Tech Stack](#tech-stack)
-    * [Automatically Generating Changelog](#automatically-generating-changelog)
-    * [Changelog](#changelog)
-    * [Authors](#authors)
-
+<ul>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#run-locally">Run Locally</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#automatically-generating-changelog">Automatically Generating Changelog</a></li>
+    <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#authors">Authors</a></li>
+</ul>
 </details>
+<p>
 
 Proof-of-concept application built using NextJS, Express and SocketIO to enable secure file sharing between sender and receiver
 
