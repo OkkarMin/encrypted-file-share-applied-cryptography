@@ -4,7 +4,7 @@
     <summary>Table of Contents</summary>
 <ul>
     <li><a href="#demo">Demo</a></li>
-    <li><a href="#run-locally">Run Locally</a></li>
+    <li><a href="#run-locally-for-development">Run Locally (for development)</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
     <li><a href="#automatically-generating-changelog">Automatically Generating Changelog</a></li>
     <li><a href="#changelog">Changelog</a></li>
@@ -54,7 +54,7 @@ npm run dev
 
 **Server**: Node, Express
 
-## To Automatically Generate Changelog
+## Automatically Generating Changelog
 
 We are following [Conventional Commits](https://conventionalcommits.org/) and [standart-version](https://github.com/conventional-changelog/standard-version) to help us automatically generate Changelog.
 
@@ -70,16 +70,7 @@ npm run release
 
 ## Authors
 
-#### Okkar Min
-
-<img src="https://avatars.githubusercontent.com/u/24297303?s=50&v=4" alt="okkar"  />
-
-- [Website](https://okkarm.in)
-- [GitHub](https://github.com/OkkarMin)
-
-#### Yeow Ying Sheng
-
-<img src="https://avatars.githubusercontent.com/u/70012669?s=50&v=4" alt="yingsheng"  />
-
-- [WebSite](https://yeowys.com)
-- [GitHub](https://github.com/dannyyys)
+|                                                 Name                                                  | Website            | Github                      |
+| :---------------------------------------------------------------------------------------------------: | ------------------ | --------------------------- |
+|   <img src="https://avatars.githubusercontent.com/u/24297303?s=50&v=4" alt="okkar"/><br> Okkar Min    | https://okkarm.in  | https://github.com/OkkarMin |
+| <img src="https://avatars.githubusercontent.com/u/70012669?s=50&v=4" alt="yingsheng"/><br> Ying Sheng | https://yeowys.com | https://github.com/dannyyys |
