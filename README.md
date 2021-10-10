@@ -4,10 +4,13 @@
     <summary>Table of Contents</summary>
 <ul>
     <li><a href="#demo">Demo</a></li>
-    <li><a href="#run-locally-for-development">Run Locally (for development)</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#folder-and-file-structure">Folder And File Structure</a></li>
+    <li><a href="#run-locally-for-development">Run Locally (for development)</a></li>
+    <li><a href="#hosting-for-production">Hosting (for production)</a></li>
     <li><a href="#automatically-generating-changelog">Automatically Generating Changelog</a></li>
     <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#todo">TODO</a></li>
     <li><a href="#authors">Authors</a></li>
 </ul>
 </details>
@@ -18,6 +21,16 @@ Proof-of-concept application built using NextJS, Express and SocketIO to enable 
 ## Demo
 
 {insert demo section here}
+
+## Tech Stack
+
+**Client**: [NextJS](http://nextjs.org), [ChakraUI](http://chakra-ui.com)
+
+**Server**: Node, Express
+
+## Folder And File Structure
+
+{insert folder/file tree section here}
 
 ## Run Locally (for development)
 
@@ -48,11 +61,9 @@ npm run dev
 - nextjs-client : http://localhost:3000
 - socket-server : http://localhost:2000
 
-## Tech Stack
+## Hosting (for production)
 
-**Client**: [NextJS](http://nextjs.org), [ChakraUI](http://chakra-ui.com)
-
-**Server**: Node, Express
+{insert dockerzing and docker-composing section here}
 
 ## Automatically Generating Changelog
 
