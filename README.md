@@ -68,6 +68,15 @@ npm run release
 
 [Click here to view Changelog](./CHANGELOG.md)
 
+## TODO
+
+- [x] Encrypted text messaging between two clients
+- [ ] Encrypted file sharing between two clients
+- [ ] UI Improvements
+  - [ ] Shows who is online in the room currently
+  - [ ] Shows what % of uploaded/downloaded file
+- [ ] Hosting on AWS Elastic Bean Stalk with HTTPS certificate
+
 ## Authors
 
 |                                                 Name                                                  | Website            | Github                      |
