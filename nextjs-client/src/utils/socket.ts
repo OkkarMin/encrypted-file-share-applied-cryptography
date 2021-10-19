@@ -1,6 +1,8 @@
 import io, { Socket } from "socket.io-client";
 import { encrypt, decrypt } from "./cryptography";
 
+import { IMessageObject } from "../../interface";
+
 let socket: Socket;
 let key: string = "defaultKey";
 
@@ -22,19 +24,31 @@ const disconnectSocket = () => {
 const subscribeToChat = (cb: Function) => {
   if (!socket) return true;
 
-  socket.on("chat", (cipherText: string) => {
+  socket.on("chat", (messageObject: IMessageObject) => {
     console.log("Websocket event received!");
 
-    const plainText = decrypt(cipherText, key);
-    return plainText ? cb(null, plainText) : cb(null, cipherText); // cb(error, message)
+    let decryptedMessageObject = messageObject;
+
+    const plainBody = decrypt(messageObject.body, key);
+
+    decryptedMessageObject = { ...decryptedMessageObject, body: plainBody };
+
+    return plainBody
+      ? cb(null, decryptedMessageObject)
+      : cb(null, messageObject); // cb(error, message)
   });
 };
 
-const sendMessage = (room: string, message: string) => {
+const sendMessage = (room: string, messageObject: IMessageObject) => {
   if (!socket) return true;
 
-  const cipherText = encrypt(message, key);
-  socket.emit("chat", { message: cipherText, room });
+  let encryptedMessageObject = messageObject;
+
+  const cipherBody = encrypt(messageObject.body, key);
+
+  encryptedMessageObject = { ...encryptedMessageObject, body: cipherBody };
+
+  socket.emit("chat", { messageObject: encryptedMessageObject, room });
 };
 
 export {

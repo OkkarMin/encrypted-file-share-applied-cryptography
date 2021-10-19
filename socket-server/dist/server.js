@@ -25,9 +25,9 @@ io.on("connection", (socket) => {
         socket.join(room);
     });
     socket.on("chat", (data) => {
-        const { message, room } = data;
-        console.log(`msg: ${message}, room: ${room}`);
-        io.to(room).emit("chat", message);
+        const { messageObject, room } = data;
+        console.log(`msg: ${messageObject}, room: ${room}`);
+        io.to(room).emit("chat", messageObject);
     });
 });
 const server = http.listen(PORT, function () {

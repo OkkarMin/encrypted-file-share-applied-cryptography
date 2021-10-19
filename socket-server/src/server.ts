@@ -32,9 +32,9 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("chat", (data: any) => {
-    const { message, room } = data;
-    console.log(`msg: ${message}, room: ${room}`);
-    io.to(room).emit("chat", message);
+    const { messageObject, room } = data;
+    console.log(`msg: ${messageObject}, room: ${room}`);
+    io.to(room).emit("chat", messageObject);
   });
 });
 

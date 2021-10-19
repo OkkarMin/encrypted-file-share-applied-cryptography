@@ -15,7 +15,10 @@ import {
   Text,
   HStack,
   VStack,
+  Image,
 } from "@chakra-ui/react";
+
+import { IMessageObject } from "../../interface";
 
 const Chat = () => {
   const rooms = ["1", "2", "3"];
@@ -23,13 +26,14 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [cipherKey, setCipherKey] = useState("");
   const [chat, setChat] = useState([]);
+  const [file, setFile] = useState<File>();
 
   useEffect(() => {
     if (room) initiateSocket(room);
 
-    subscribeToChat((err: any, message: string) => {
+    subscribeToChat((err: any, messageObject: IMessageObject) => {
       if (err) return;
-      setChat((oldChats) => [message, ...oldChats]);
+      setChat((oldChats) => [messageObject, ...oldChats]);
     });
 
     return () => {
@@ -42,8 +46,24 @@ const Chat = () => {
   }, [cipherKey]);
 
   const handleSendMessage = () => {
-    sendMessage(room, message);
-    setMessage("");
+    if (file) {
+      const messageObject = {
+        type: "file",
+        body: URL.createObjectURL(file),
+        mimeType: file.type,
+        fileName: file.name,
+      };
+      sendMessage(room, messageObject);
+      setMessage("");
+      setFile(undefined);
+    } else {
+      const messageObject = {
+        type: "text",
+        body: message,
+      };
+      sendMessage(room, messageObject);
+      setMessage("");
+    }
   };
 
   return (
@@ -69,20 +89,29 @@ const Chat = () => {
       <Heading>Live Chat:</Heading>
 
       <HStack>
-        <Input
-          type="text"
-          name="name"
-          value={message}
-          placeholder="Type your message here..."
-          onChange={(e) => setMessage(e.target.value)}
-        />
+        <VStack>
+          <Input
+            type="text"
+            name="name"
+            value={message}
+            placeholder="Type your message here..."
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Input
+            type="file"
+            name="file"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </VStack>
         <Button onClick={handleSendMessage}>Send</Button>
       </HStack>
-
       <VStack align="flex-start" marginTop="1em">
-        {chat.map((message: string, i: number) => (
-          <Text key={i}>{message}</Text>
-        ))}
+        {chat.map((message, index) => {
+          if (message.type === "file") {
+            return <Image src={message.body} />;
+          }
+          return <Text key={index}>{message.body}</Text>;
+        })}
       </VStack>
     </Container>
   );
