@@ -42,7 +42,11 @@ const Chat = () => {
   }, [room]);
 
   useEffect(() => {
-    setKey(cipherKey);
+    if (cipherKey === "") {
+      setKey("defaultKey");
+    } else {
+      setKey(cipherKey);
+    }
   }, [cipherKey]);
 
   const handleSendMessage = () => {
