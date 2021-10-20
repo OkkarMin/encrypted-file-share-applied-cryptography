@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.1.0...v1.2.0) (2021-10-20)
+
+
+### Features
+
+* :sparkles: Add send images ([374c646](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/374c646fdb61cd9b9d5f4f4993de5347dc0037a2))
+
+
+### Bug Fixes
+
+* :bug: Fix error when cipherKey is empty ([2a4da39](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/2a4da399ae38fb946b778e3958b9eace5a729982))
+
 ## 1.1.0 (2021-09-24)
 
 
