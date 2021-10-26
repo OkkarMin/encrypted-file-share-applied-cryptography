@@ -50,24 +50,25 @@ const Chat = () => {
   }, [cipherKey]);
 
   const handleSendMessage = () => {
+    let messageObject: IMessageObject;
+
     if (file) {
-      const messageObject = {
+      messageObject = {
         type: "file",
         body: URL.createObjectURL(file),
         mimeType: file.type,
         fileName: file.name,
       };
-      sendMessage(room, messageObject);
-      setMessage("");
-      setFile(undefined);
     } else {
-      const messageObject = {
+      messageObject = {
         type: "text",
         body: message,
       };
-      sendMessage(room, messageObject);
-      setMessage("");
     }
+
+    sendMessage(room, messageObject);
+    setMessage("");
+    setFile(undefined);
   };
 
   return (
