@@ -1,0 +1,12 @@
+services:
+  nextjs-client:
+    build: ./nextjs-client
+    depends_on:
+      - socket-server
+    ports:
+      - 80:3000
+
+  socket-server:
+    build: ./socket-server
+    ports:
+      - 2000:2000
