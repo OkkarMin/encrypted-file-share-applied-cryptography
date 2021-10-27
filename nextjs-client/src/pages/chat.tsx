@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 
 import { IMessageObject } from "../../interface";
+import { toBase64 } from "../utils/toBase64";
 
 const Chat = () => {
   const rooms = ["1", "2", "3"];
@@ -49,13 +50,13 @@ const Chat = () => {
     }
   }, [cipherKey]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     let messageObject: IMessageObject;
 
     if (file) {
       messageObject = {
         type: "file",
-        body: URL.createObjectURL(file),
+        body: await toBase64(file),
         mimeType: file.type,
         fileName: file.name,
       };
@@ -113,7 +114,7 @@ const Chat = () => {
       <VStack align="flex-start" marginTop="1em">
         {chat.map((message, index) => {
           if (message.type === "file") {
-            return <Image src={message.body} />;
+            return <Image key={index} src={message.body} />;
           }
           return <Text key={index}>{message.body}</Text>;
         })}

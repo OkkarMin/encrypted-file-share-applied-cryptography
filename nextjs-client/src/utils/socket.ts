@@ -33,7 +33,12 @@ const subscribeToChat = (cb: Function) => {
 
     let decryptedMessageObject = messageObject;
 
-    const plainBody = decrypt(messageObject.body, key);
+    let plainBody: string;
+    try {
+      plainBody = decrypt(messageObject.body, key);
+    } catch (error) {
+      plainBody = undefined;
+    }
 
     decryptedMessageObject = { ...decryptedMessageObject, body: plainBody };
 
