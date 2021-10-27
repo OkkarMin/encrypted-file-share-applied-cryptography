@@ -12,7 +12,7 @@ const setKey = (newKey: string) => (key = newKey);
 const initiateSocket = (room: string) => {
   const socketServer =
     process.env.NODE_ENV == "production"
-      ? "encrypted-fileshare.ml:4000"
+      ? "encrypted-fileshare.ml"
       : "localhost:2000";
   socket = io(`${socketServer}`);
   console.log(`Connecting socket...`);
