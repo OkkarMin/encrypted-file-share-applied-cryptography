@@ -2,7 +2,6 @@ import io, { Socket } from "socket.io-client";
 import { encrypt, decrypt } from "./cryptography";
 
 import { IMessageObject } from "../../interface";
-import { MenuOptionGroup } from "@chakra-ui/menu";
 
 let socket: Socket;
 let key: string = "defaultKey";
