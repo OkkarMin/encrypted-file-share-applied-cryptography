@@ -5,11 +5,12 @@ const Index = () => (
   <VStack height="100vh" justify="center" align="center" spacing="2em">
     <Heading>Encrypted File Sharing Session - Applied Cryptography</Heading>
 
-    <Button colorScheme="whatsapp">To Send File</Button>
-    <Button colorScheme="linkedin">To Receive File</Button>
+    <Link href="/symmetric-room">
+      <Button colorScheme="linkedin">Room - Symmetrically Encrypted</Button>
+    </Link>
 
-    <Link href="/chat">
-      <Button colorScheme="pink">To Chat Page</Button>
+    <Link href="/asymmetric-room">
+      <Button colorScheme="whatsapp">Room - Asymmetrically Encrypted</Button>
     </Link>
   </VStack>
 );
