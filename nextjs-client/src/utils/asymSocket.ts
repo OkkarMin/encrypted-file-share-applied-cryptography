@@ -10,6 +10,8 @@ let publicKey: any;
 const setPublicKey = (newKey: any) => (publicKey = newKey);
 let privateKey: any;
 const setPrivateKey = (newKey: any) => (privateKey = newKey);
+let sharedKey: any;
+const setSharedKey = (newKey: any) => (sharedKey = newKey);
 
 const initiateSocket = async (room: string) => {
   const socketServer =
@@ -77,6 +79,8 @@ const makeSharedKey = async () => {
     ["encrypt", "decrypt"]
   );
 
+  setSharedKey(key);
+
   return key;
 };
 
@@ -84,12 +88,12 @@ const makeSharedKey = async () => {
 const sendSharedKey = async (
   sendToTarget: string,
   sendToTargetPublicKey: any,
-  sharedKey: any
+  createdSharedKey: any
 ) => {
   // convert shared key to exportable format
   const exportableSharedKey = await window.crypto.subtle.exportKey(
     "raw",
-    sharedKey
+    createdSharedKey
   );
 
   // import public key of receipient
@@ -143,6 +147,8 @@ const receieveSharedKey = (cb: Function) => {
       false,
       ["decrypt"]
     );
+
+    setSharedKey(importDecryptedSharedKey);
 
     return importDecryptedSharedKey
       ? cb(null, importDecryptedSharedKey)

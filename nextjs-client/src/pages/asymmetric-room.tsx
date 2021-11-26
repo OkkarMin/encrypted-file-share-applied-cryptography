@@ -35,7 +35,6 @@ const AsymmetricChat = () => {
   const [file, setFile] = useState<File>();
   const [listOfConnectedUsers, setListOfConnectedUsers] = useState<any>();
   const [sendToTarget, setSendToTarget] = useState<string>("-");
-  const [sharedKey, setSharedKey] = useState<any>();
 
   const [mySocketID, setMySocketID] = useState("");
 
@@ -55,7 +54,6 @@ const AsymmetricChat = () => {
 
     receieveSharedKey((err: any, importDecryptedSharedKey: any) => {
       if (err) return;
-      setSharedKey(importDecryptedSharedKey);
       console.log("got this shared key from sender", importDecryptedSharedKey);
     });
 
@@ -93,7 +91,6 @@ const AsymmetricChat = () => {
   const handleChosenReceipient = async (receipient: string) => {
     setSendToTarget(receipient);
     const createdSharedKey = await makeSharedKey();
-    setSharedKey(createdSharedKey);
     await sendSharedKey(
       receipient,
       listOfConnectedUsers[room][receipient],
