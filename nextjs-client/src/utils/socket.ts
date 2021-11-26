@@ -16,7 +16,7 @@ const initiateSocket = (room: string) => {
   socket = io(`${socketServer}`);
   console.log(`Connecting socket...`);
 
-  if (socket && room) socket.emit("join", room);
+  if (socket && room) socket.emit("join", { room });
 };
 
 const disconnectSocket = () => {
