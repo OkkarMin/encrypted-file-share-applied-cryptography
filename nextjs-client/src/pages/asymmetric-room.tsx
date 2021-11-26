@@ -31,6 +31,7 @@ const AsymmetricChat = () => {
   const [chat, setChat] = useState([]);
   const [file, setFile] = useState<File>();
   const [listOfConnectedUsers, setListOfConnectedUsers] = useState<any>();
+  const [sendingToTarget, setSendingToTarget] = useState<string>("-");
 
   const [mySocketID, setMySocketID] = useState("");
 
@@ -47,6 +48,8 @@ const AsymmetricChat = () => {
       setListOfConnectedUsers(listOfUsers);
       setMySocketID(myID);
     });
+
+    setSendingToTarget("-");
 
     return () => {
       disconnectSocket();
@@ -98,7 +101,7 @@ const AsymmetricChat = () => {
               <Button
                 key={i}
                 onClick={() => {
-                  console.log(listOfConnectedUsers[user]);
+                  setSendingToTarget(user);
                 }}
               >
                 {user}
@@ -106,8 +109,16 @@ const AsymmetricChat = () => {
             );
           }
         })}
+      <Heading size="md" marginTop="2vh">
+        You are sending to:
+      </Heading>
+      {sendingToTarget === "-" ? (
+        <Text>Click on connected user to select who to send item to</Text>
+      ) : (
+        <Heading size="md">{sendingToTarget}</Heading>
+      )}
 
-      <Heading>Live Chat:</Heading>
+      <Heading marginTop="5vh">Live Chat:</Heading>
 
       <HStack>
         <VStack>
