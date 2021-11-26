@@ -53,10 +53,10 @@ const AsymmetricChat = () => {
       setMySocketID(myID);
     });
 
-    receieveSharedKey((err: any, importSharedKey: any) => {
+    receieveSharedKey((err: any, importDecryptedSharedKey: any) => {
       if (err) return;
-      setSharedKey(importSharedKey);
-      console.log("got this shared key from sender", importSharedKey);
+      setSharedKey(importDecryptedSharedKey);
+      console.log("got this shared key from sender", importDecryptedSharedKey);
     });
 
     setSendToTarget("-");
@@ -94,7 +94,11 @@ const AsymmetricChat = () => {
     setSendToTarget(receipient);
     const createdSharedKey = await makeSharedKey();
     setSharedKey(createdSharedKey);
-    await sendSharedKey(receipient, createdSharedKey);
+    await sendSharedKey(
+      receipient,
+      listOfConnectedUsers[room][receipient],
+      createdSharedKey
+    );
   };
 
   return (

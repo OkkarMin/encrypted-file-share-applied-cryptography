@@ -62,8 +62,8 @@ io.on("connection", (socket: Socket) => {
 
   // socket to send shared key to receipient
   socket.on("sendSharedKey", (data: any) => {
-    const { sendToTarget, exportableSharedKey } = data;
-    io.to(sendToTarget).emit("recieveSharedKey", exportableSharedKey);
+    const { sendToTarget, encryptedSharedKey } = data;
+    io.to(sendToTarget).emit("recieveSharedKey", encryptedSharedKey);
   });
 });
 const server = http.listen(PORT, function () {

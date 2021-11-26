@@ -2,6 +2,8 @@ import io, { Socket } from "socket.io-client";
 
 import { IMessageObject, IAsymmetricMessageObject } from "../../interface";
 
+import { toBase64 } from "../utils/toBase64";
+
 let socket: Socket;
 
 let publicKey: any;
@@ -79,24 +81,61 @@ const makeSharedKey = async () => {
 };
 
 // function to send sharedkey and recipient to socket
-const sendSharedKey = async (sendToTarget: string, sharedKey: any) => {
+const sendSharedKey = async (
+  sendToTarget: string,
+  sendToTargetPublicKey: any,
+  sharedKey: any
+) => {
+  // convert shared key to exportable format
   const exportableSharedKey = await window.crypto.subtle.exportKey(
-    "jwk",
+    "raw",
     sharedKey
   );
 
-  socket.emit("sendSharedKey", { sendToTarget, exportableSharedKey });
+  // import public key of receipient
+  const sendToTargetUsablePublicKey = await window.crypto.subtle.importKey(
+    "jwk",
+    sendToTargetPublicKey,
+    {
+      name: "RSA-OAEP",
+      hash: { name: "SHA-256" },
+    },
+    false,
+    ["encrypt"]
+  );
+
+  // encrypt exportable shared key with receipient public key
+  const encryptedSharedKey = await window.crypto.subtle.encrypt(
+    {
+      name: "RSA-OAEP",
+    },
+    // receipient public key
+    sendToTargetUsablePublicKey,
+    exportableSharedKey
+  );
+
+  socket.emit("sendSharedKey", { sendToTarget, encryptedSharedKey });
 };
 
 // receipient to recieve shared key from socket
 const receieveSharedKey = (cb: Function) => {
   if (!socket) return true;
 
-  socket.on("recieveSharedKey", async (exportableSharedKey: any) => {
-    // convert exportableSharedKey into usable format
-    const importSharedKey = await window.crypto.subtle.importKey(
-      "jwk",
-      exportableSharedKey,
+  socket.on("recieveSharedKey", async (encryptedSharedKey: any) => {
+    // decrypt shared key
+    const decryptedSharedKey = await window.crypto.subtle.decrypt(
+      {
+        name: "RSA-OAEP",
+      },
+      // receipient private key
+      privateKey,
+      encryptedSharedKey
+    );
+
+    // convert to decryped shared key to usable format
+    const importDecryptedSharedKey = await window.crypto.subtle.importKey(
+      "raw",
+      decryptedSharedKey,
       {
         name: "AES-CBC",
         length: 256,
@@ -105,7 +144,9 @@ const receieveSharedKey = (cb: Function) => {
       ["decrypt"]
     );
 
-    return importSharedKey ? cb(null, importSharedKey) : cb(null, {});
+    return importDecryptedSharedKey
+      ? cb(null, importDecryptedSharedKey)
+      : cb(null, {});
   });
 };
 
