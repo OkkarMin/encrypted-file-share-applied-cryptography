@@ -157,10 +157,13 @@ const AsymmetricChat = () => {
       </HStack>
       <VStack align="flex-start" marginTop="1em">
         {chat.map((message, index) => {
-          if (message.type === "file") {
-            return <Image key={index} src={message.body} />;
+          if (message.body !== "not for you") {
+            if (message.type === "file") {
+              return <Image key={index} src={message.body} />;
+            }
+            return <Text key={index}>{message.body}</Text>;
           }
-          return <Text key={index}>{message.body}</Text>;
+          return <Text></Text>;
         })}
       </VStack>
     </Container>

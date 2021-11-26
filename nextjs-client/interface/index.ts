@@ -8,8 +8,7 @@ export interface IMessageObject {
 export interface IAsymmetricMessageObject {
   type: string;
   body: string;
+  iv: any;
   mimeType?: string;
   fileName?: string;
-  myPublicKey: any;
-  myPrivateKey: any;
 }

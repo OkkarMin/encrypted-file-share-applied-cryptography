@@ -126,7 +126,7 @@ const receieveSharedKey = (cb: Function) => {
   if (!socket) return true;
 
   socket.on("recieveSharedKey", async (encryptedSharedKey: any) => {
-    // decrypt shared key
+    // decrypt shared key using receipient private key
     const decryptedSharedKey = await window.crypto.subtle.decrypt(
       {
         name: "RSA-OAEP",
@@ -166,29 +166,15 @@ const subscribeToChat = async (cb: Function) => {
 
     let plainBody: any;
     try {
-      /**
-       * make convert imported private key into usable format
-       */
-      const importPrivateKey = await window.crypto.subtle.importKey(
-        "jwk",
-        messageObject.myPrivateKey,
-        {
-          name: "RSA-OAEP",
-          hash: { name: "SHA-256" },
-        },
-        false,
-        ["decrypt"]
-      );
-
       plainBody = await window.crypto.subtle.decrypt(
         {
-          name: "RSA-OAEP",
+          name: "AES-CBC",
+          length: 256,
+          iv: messageObject.iv,
         },
-        importPrivateKey,
+        sharedKey,
         Buffer.from(messageObject.body)
       );
-
-      console.log("Decrypted message: ", utf8decoder.decode(plainBody));
     } catch (error) {
       // if the key is wrong, we don't want to decrypt the message
       plainBody = undefined;
@@ -199,11 +185,16 @@ const subscribeToChat = async (cb: Function) => {
       body: utf8decoder.decode(plainBody),
     };
 
-    console.log("decryptedMessageObject", decryptedMessageObject);
+    const undecryptedMessageObject = {
+      ...messageObject,
+      body: "not for you",
+    };
+
+    console.log("messageObject", messageObject);
 
     return plainBody
       ? cb(null, decryptedMessageObject)
-      : cb(null, messageObject); // cb(error, message)
+      : cb(null, undecryptedMessageObject); // cb(error, message)
   });
 };
 
@@ -219,42 +210,28 @@ const sendAsymmetricMessage = async (
 
   console.log(Buffer.from(messageObject.body, "base64"), "bufeerrrr");
 
+  const iv = window.crypto.getRandomValues(new Uint8Array(16));
+
   try {
-    if (messageObject.type === "text") {
-      encryptedMessage = await window.crypto.subtle.encrypt(
-        {
-          name: "RSA-OAEP",
-        },
-        myPublicKey,
-        Buffer.from(messageObject.body)
-      );
-    } else {
-      encryptedMessage = await window.crypto.subtle.encrypt(
-        {
-          name: "RSA-OAEP",
-        },
-        myPublicKey,
-        Buffer.from(messageObject.body)
-      );
-    }
+    encryptedMessage = await window.crypto.subtle.encrypt(
+      {
+        name: "AES-CBC",
+        length: 256,
+        iv,
+      },
+      sharedKey,
+      Buffer.from(messageObject.body)
+    );
   } catch (error) {
     console.log("error", error);
   }
 
   console.log("encryptedMessage before sending", encryptedMessage);
 
-  /**
-   * make private key into exportable format
-   */
-  const exportedPrivateKey = await window.crypto.subtle.exportKey(
-    "jwk",
-    myPrivateKey
-  );
-
   const encryptedMessageObject = {
     ...messageObject,
     body: encryptedMessage,
-    myPrivateKey: exportedPrivateKey,
+    iv,
   };
 
   console.log("encryptedMessageObject before sending", encryptedMessageObject);
