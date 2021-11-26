@@ -5,6 +5,9 @@ import {
   subscribeToChat,
   sendAsymmetricMessage,
   connectedUsers,
+  makeSharedKey,
+  sendSharedKey,
+  receieveSharedKey,
 } from "../utils/asymSocket";
 
 import {
@@ -31,7 +34,8 @@ const AsymmetricChat = () => {
   const [chat, setChat] = useState([]);
   const [file, setFile] = useState<File>();
   const [listOfConnectedUsers, setListOfConnectedUsers] = useState<any>();
-  const [sendingToTarget, setSendingToTarget] = useState<string>("-");
+  const [sendToTarget, setSendToTarget] = useState<string>("-");
+  const [sharedKey, setSharedKey] = useState<any>();
 
   const [mySocketID, setMySocketID] = useState("");
 
@@ -49,7 +53,13 @@ const AsymmetricChat = () => {
       setMySocketID(myID);
     });
 
-    setSendingToTarget("-");
+    receieveSharedKey((err: any, importSharedKey: any) => {
+      if (err) return;
+      setSharedKey(importSharedKey);
+      console.log("got this shared key from sender", importSharedKey);
+    });
+
+    setSendToTarget("-");
 
     return () => {
       disconnectSocket();
@@ -80,6 +90,13 @@ const AsymmetricChat = () => {
     setFile(undefined);
   };
 
+  const handleChosenReceipient = async (receipient: string) => {
+    setSendToTarget(receipient);
+    const createdSharedKey = await makeSharedKey();
+    setSharedKey(createdSharedKey);
+    await sendSharedKey(receipient, createdSharedKey);
+  };
+
   return (
     <Container>
       <Heading>Current Room: {room}</Heading>
@@ -101,7 +118,7 @@ const AsymmetricChat = () => {
               <Button
                 key={i}
                 onClick={() => {
-                  setSendingToTarget(user);
+                  handleChosenReceipient(user);
                 }}
               >
                 {user}
@@ -112,10 +129,10 @@ const AsymmetricChat = () => {
       <Heading size="md" marginTop="2vh">
         You are sending to:
       </Heading>
-      {sendingToTarget === "-" ? (
+      {sendToTarget === "-" ? (
         <Text>Click on connected user to select who to send item to</Text>
       ) : (
-        <Heading size="md">{sendingToTarget}</Heading>
+        <Heading size="md">{sendToTarget}</Heading>
       )}
 
       <Heading marginTop="5vh">Live Chat:</Heading>

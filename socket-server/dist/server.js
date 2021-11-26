@@ -43,14 +43,17 @@ io.on("connection", (socket) => {
         socket.join(room);
         // add user to list
         listOfUsers[room][socket.id] = exportedPublicKey;
-        // console.log(listOfUsers, "list of connected users");
         io.to(room).emit("listOfUsers", listOfUsers);
-        //io.emit("listOfUsers", listOfUsers);
     });
     socket.on("chat", (data) => {
         const { messageObject, room } = data;
         console.log(`msg: ${messageObject}, room: ${room}`);
         io.to(room).emit("chat", messageObject);
+    });
+    // socket to send shared key to receipient
+    socket.on("sendSharedKey", (data) => {
+        const { sendToTarget, exportableSharedKey } = data;
+        io.to(sendToTarget).emit("recieveSharedKey", exportableSharedKey);
     });
 });
 const server = http.listen(PORT, function () {

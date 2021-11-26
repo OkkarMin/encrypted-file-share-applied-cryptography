@@ -64,6 +64,51 @@ const connectedUsers = (cb: Function) => {
   });
 };
 
+// create sharedkey
+const makeSharedKey = async () => {
+  const key = await window.crypto.subtle.generateKey(
+    {
+      name: "AES-CBC",
+      length: 256,
+    },
+    true,
+    ["encrypt", "decrypt"]
+  );
+
+  return key;
+};
+
+// function to send sharedkey and recipient to socket
+const sendSharedKey = async (sendToTarget: string, sharedKey: any) => {
+  const exportableSharedKey = await window.crypto.subtle.exportKey(
+    "jwk",
+    sharedKey
+  );
+
+  socket.emit("sendSharedKey", { sendToTarget, exportableSharedKey });
+};
+
+// receipient to recieve shared key from socket
+const receieveSharedKey = (cb: Function) => {
+  if (!socket) return true;
+
+  socket.on("recieveSharedKey", async (exportableSharedKey: any) => {
+    // convert exportableSharedKey into usable format
+    const importSharedKey = await window.crypto.subtle.importKey(
+      "jwk",
+      exportableSharedKey,
+      {
+        name: "AES-CBC",
+        length: 256,
+      },
+      false,
+      ["decrypt"]
+    );
+
+    return importSharedKey ? cb(null, importSharedKey) : cb(null, {});
+  });
+};
+
 const subscribeToChat = async (cb: Function) => {
   if (!socket) return true;
 
@@ -179,4 +224,7 @@ export {
   subscribeToChat,
   sendAsymmetricMessage,
   connectedUsers,
+  makeSharedKey,
+  sendSharedKey,
+  receieveSharedKey,
 };
