@@ -38,11 +38,14 @@ io.on("connection", (socket) => {
         io.emit("listOfUsers", listOfUsers);
     });
     socket.on("join", (data) => {
-        const { exportedPublicKey, room } = data;
+        const { exportedPublicKey, room, exportedPublicVerifyingKey } = data;
         console.log(`Socket ${socket.id} joining ${room}`);
         socket.join(room);
         // add user to list
-        listOfUsers[room][socket.id] = exportedPublicKey;
+        listOfUsers[room][socket.id] = {
+            exportedPublicKey: exportedPublicKey,
+            exportedPublicVerifyingKey: exportedPublicVerifyingKey,
+        };
         io.to(room).emit("listOfUsers", listOfUsers);
     });
     socket.on("chat", (data) => {

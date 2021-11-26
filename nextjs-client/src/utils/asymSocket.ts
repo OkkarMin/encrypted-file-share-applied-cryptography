@@ -12,6 +12,10 @@ let privateKey: any;
 const setPrivateKey = (newKey: any) => (privateKey = newKey);
 let sharedKey: any;
 const setSharedKey = (newKey: any) => (sharedKey = newKey);
+let publicVerifyingKey: any;
+const setPublicVerifyingKey = (newKey: any) => (publicVerifyingKey = newKey);
+let privateSigningKey: any;
+const setPrivateSigningKey = (newKey: any) => (privateSigningKey = newKey);
 
 const initiateSocket = async (room: string) => {
   const socketServer =
@@ -44,9 +48,43 @@ const initiateSocket = async (room: string) => {
           keys.publicKey
         );
 
+        await window.crypto.subtle
+          .generateKey(
+            {
+              name: "RSASSA-PKCS1-v1_5",
+              modulusLength: 4096,
+              publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+              hash: {
+                name: "SHA-256",
+              },
+            },
+            true,
+            ["sign", "verify"]
+          )
+          .then(async (keys) => {
+            setPublicVerifyingKey(keys.publicKey);
+            setPrivateSigningKey(keys.privateKey);
+
+            const exportedPublicVerifyingKey =
+              await window.crypto.subtle.exportKey("jwk", keys.publicKey);
+
+            // send exportable public key to server
+            if (
+              socket &&
+              room &&
+              exportedPublicKey &&
+              exportedPublicVerifyingKey
+            )
+              socket.emit("join", {
+                room,
+                exportedPublicKey,
+                exportedPublicVerifyingKey,
+              });
+          });
+
         // send exportable public key to server
-        if (socket && room && exportedPublicKey)
-          socket.emit("join", { room, exportedPublicKey });
+        // if (socket && room && exportedPublicKey)
+        //   socket.emit("join", { room, exportedPublicKey });
       });
   };
 
@@ -165,7 +203,32 @@ const subscribeToChat = async (cb: Function) => {
     let utf8decoder = new TextDecoder();
 
     let plainBody: any;
+    let verified: boolean;
+
     try {
+      // console.log(
+      //   messageObject.senderExportedPublicVerifyingKey,
+      //   "insdie boii!!!!!!"
+      // );
+      // console.log(publicVerifyingKey, "insdie boii!!!!!!");
+
+      const importsenderPublicVerifyingKey =
+        await window.crypto.subtle.importKey(
+          "jwk",
+          messageObject.senderExportedPublicVerifyingKey,
+          {
+            name: "RSASSA-PKCS1-v1_5",
+            hash: { name: "SHA-256" },
+          },
+          false,
+          ["verify"]
+        );
+
+      console.log(
+        importsenderPublicVerifyingKey,
+        "importsenderPublicVerifyingKey!!!!!!"
+      );
+
       plainBody = await window.crypto.subtle.decrypt(
         {
           name: "AES-CBC",
@@ -175,6 +238,14 @@ const subscribeToChat = async (cb: Function) => {
         sharedKey,
         Buffer.from(messageObject.body)
       );
+
+      verified = await window.crypto.subtle.verify(
+        "RSASSA-PKCS1-v1_5",
+        importsenderPublicVerifyingKey,
+        messageObject.signature,
+        Buffer.from(messageObject.body)
+      );
+      console.log("Verified 129308413jr nv9813r", verified);
     } catch (error) {
       // if the key is wrong, we don't want to decrypt the message
       plainBody = undefined;
@@ -183,8 +254,10 @@ const subscribeToChat = async (cb: Function) => {
     const decryptedMessageObject = {
       ...messageObject,
       body: utf8decoder.decode(plainBody),
+      verified,
     };
 
+    // is message not decrypted, change body to "not for you"
     const undecryptedMessageObject = {
       ...messageObject,
       body: "not for you",
@@ -207,12 +280,34 @@ const sendAsymmetricMessage = async (
   console.log(messageObject, "messageObject");
 
   let encryptedMessage: any;
+  let signature: any;
 
   console.log(Buffer.from(messageObject.body, "base64"), "bufeerrrr");
 
   const iv = window.crypto.getRandomValues(new Uint8Array(16));
 
+  // let utf8encoder = new TextEncoder();
+
   try {
+    // encryptedMessage = await window.crypto.subtle
+    //   .encrypt(
+    //     {
+    //       name: "AES-CBC",
+    //       length: 256,
+    //       iv,
+    //     },
+    //     sharedKey,
+    //     Buffer.from(messageObject.body)
+    //   )
+    //   .then(async (encryptedMessage) => {
+    //     signature = await window.crypto.subtle.sign(
+    //       "RSASSA-PKCS1-v1_5",
+    //       privateKey,
+    //       encryptedMessage
+    //     );
+    //     console.log("signature", signature);
+    //   });
+
     encryptedMessage = await window.crypto.subtle.encrypt(
       {
         name: "AES-CBC",
@@ -222,19 +317,29 @@ const sendAsymmetricMessage = async (
       sharedKey,
       Buffer.from(messageObject.body)
     );
+
+    console.log("privateKey", privateKey);
+
+    signature = await window.crypto.subtle.sign(
+      { name: "RSASSA-PKCS1-v1_5" },
+      privateSigningKey,
+      encryptedMessage
+    );
+    // console.log("signature", signature);
   } catch (error) {
     console.log("error", error);
   }
 
-  console.log("encryptedMessage before sending", encryptedMessage);
+  // console.log("encryptedMessage before sending", encryptedMessage);
 
   const encryptedMessageObject = {
     ...messageObject,
     body: encryptedMessage,
     iv,
+    signature,
   };
 
-  console.log("encryptedMessageObject before sending", encryptedMessageObject);
+  // console.log("encryptedMessageObject before sending", encryptedMessageObject);
 
   socket.emit("chat", {
     messageObject: encryptedMessageObject,

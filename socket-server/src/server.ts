@@ -44,12 +44,15 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("join", (data: any) => {
-    const { exportedPublicKey, room } = data;
+    const { exportedPublicKey, room, exportedPublicVerifyingKey } = data;
     console.log(`Socket ${socket.id} joining ${room}`);
     socket.join(room);
 
     // add user to list
-    listOfUsers[room][socket.id] = exportedPublicKey;
+    listOfUsers[room][socket.id] = {
+      exportedPublicKey: exportedPublicKey,
+      exportedPublicVerifyingKey: exportedPublicVerifyingKey,
+    };
 
     io.to(room).emit("listOfUsers", listOfUsers);
   });

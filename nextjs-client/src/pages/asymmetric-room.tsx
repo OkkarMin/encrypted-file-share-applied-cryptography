@@ -20,6 +20,7 @@ import {
   VStack,
   Image,
 } from "@chakra-ui/react";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 import { IMessageObject } from "../../interface";
 import { toBase64 } from "../utils/toBase64";
@@ -75,11 +76,15 @@ const AsymmetricChat = () => {
         body: await toBase64(file),
         mimeType: file.type,
         fileName: file.name,
+        senderExportedPublicVerifyingKey:
+          listOfConnectedUsers[room][mySocketID].exportedPublicVerifyingKey,
       };
     } else {
       messageObject = {
         type: "text",
         body: message,
+        senderExportedPublicVerifyingKey:
+          listOfConnectedUsers[room][mySocketID].exportedPublicVerifyingKey,
       };
     }
 
@@ -93,7 +98,7 @@ const AsymmetricChat = () => {
     const createdSharedKey = await makeSharedKey();
     await sendSharedKey(
       receipient,
-      listOfConnectedUsers[room][receipient],
+      listOfConnectedUsers[room][receipient].exportedPublicKey,
       createdSharedKey
     );
   };
@@ -104,7 +109,12 @@ const AsymmetricChat = () => {
 
       <Text>Select room:</Text>
       {rooms.map((r, i) => (
-        <Button onClick={() => setRoom(r)} key={i}>
+        <Button
+          margin="5px"
+          colorScheme="green"
+          onClick={() => setRoom(r)}
+          key={i}
+        >
           {r}
         </Button>
       ))}
@@ -121,6 +131,8 @@ const AsymmetricChat = () => {
                 onClick={() => {
                   handleChosenReceipient(user);
                 }}
+                margin="5px"
+                colorScheme="blue"
               >
                 {user}
               </Button>
@@ -157,13 +169,31 @@ const AsymmetricChat = () => {
       </HStack>
       <VStack align="flex-start" marginTop="1em">
         {chat.map((message, index) => {
+          // only display something in chat is body is decrypted
           if (message.body !== "not for you") {
             if (message.type === "file") {
-              return <Image key={index} src={message.body} />;
+              return (
+                <HStack key={index}>
+                  <Image src={message.body} />
+                  {message.verified ? (
+                    <CheckCircleIcon color="green.500" />
+                  ) : (
+                    <WarningIcon color="red.500" />
+                  )}
+                </HStack>
+              );
             }
-            return <Text key={index}>{message.body}</Text>;
+            return (
+              <HStack key={index}>
+                <Text>{message.body}</Text>
+                {message.verified ? (
+                  <CheckCircleIcon color="green.500" />
+                ) : (
+                  <WarningIcon color="red.500" />
+                )}
+              </HStack>
+            );
           }
-          return <Text></Text>;
         })}
       </VStack>
     </Container>
