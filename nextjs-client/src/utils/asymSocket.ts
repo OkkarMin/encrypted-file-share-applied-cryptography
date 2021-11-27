@@ -2,18 +2,20 @@ import io, { Socket } from "socket.io-client";
 
 import { IMessageObject, IAsymmetricMessageObject } from "../../interface";
 
-import { toBase64 } from "../utils/toBase64";
-
 let socket: Socket;
 
 let publicKey: any;
 const setPublicKey = (newKey: any) => (publicKey = newKey);
+
 let privateKey: any;
 const setPrivateKey = (newKey: any) => (privateKey = newKey);
+
 let sharedKey: any;
 const setSharedKey = (newKey: any) => (sharedKey = newKey);
+
 let publicVerifyingKey: any;
 const setPublicVerifyingKey = (newKey: any) => (publicVerifyingKey = newKey);
+
 let privateSigningKey: any;
 const setPrivateSigningKey = (newKey: any) => (privateSigningKey = newKey);
 
@@ -81,10 +83,6 @@ const initiateSocket = async (room: string) => {
                 exportedPublicVerifyingKey,
               });
           });
-
-        // send exportable public key to server
-        // if (socket && room && exportedPublicKey)
-        //   socket.emit("join", { room, exportedPublicKey });
       });
   };
 
@@ -206,12 +204,6 @@ const subscribeToChat = async (cb: Function) => {
     let verified: boolean;
 
     try {
-      // console.log(
-      //   messageObject.senderExportedPublicVerifyingKey,
-      //   "insdie boii!!!!!!"
-      // );
-      // console.log(publicVerifyingKey, "insdie boii!!!!!!");
-
       const importsenderPublicVerifyingKey =
         await window.crypto.subtle.importKey(
           "jwk",
@@ -257,7 +249,7 @@ const subscribeToChat = async (cb: Function) => {
       verified,
     };
 
-    // is message not decrypted, change body to "not for you"
+    // if message not decrypted, change body to "not for you"
     const undecryptedMessageObject = {
       ...messageObject,
       body: "not for you",
@@ -286,28 +278,7 @@ const sendAsymmetricMessage = async (
 
   const iv = window.crypto.getRandomValues(new Uint8Array(16));
 
-  // let utf8encoder = new TextEncoder();
-
   try {
-    // encryptedMessage = await window.crypto.subtle
-    //   .encrypt(
-    //     {
-    //       name: "AES-CBC",
-    //       length: 256,
-    //       iv,
-    //     },
-    //     sharedKey,
-    //     Buffer.from(messageObject.body)
-    //   )
-    //   .then(async (encryptedMessage) => {
-    //     signature = await window.crypto.subtle.sign(
-    //       "RSASSA-PKCS1-v1_5",
-    //       privateKey,
-    //       encryptedMessage
-    //     );
-    //     console.log("signature", signature);
-    //   });
-
     encryptedMessage = await window.crypto.subtle.encrypt(
       {
         name: "AES-CBC",
@@ -325,12 +296,9 @@ const sendAsymmetricMessage = async (
       privateSigningKey,
       encryptedMessage
     );
-    // console.log("signature", signature);
   } catch (error) {
     console.log("error", error);
   }
-
-  // console.log("encryptedMessage before sending", encryptedMessage);
 
   const encryptedMessageObject = {
     ...messageObject,
@@ -338,8 +306,6 @@ const sendAsymmetricMessage = async (
     iv,
     signature,
   };
-
-  // console.log("encryptedMessageObject before sending", encryptedMessageObject);
 
   socket.emit("chat", {
     messageObject: encryptedMessageObject,
