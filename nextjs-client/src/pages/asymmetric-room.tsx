@@ -46,8 +46,10 @@ const AsymmetricChat = () => {
     !loading && !user && (window.location.href = "/auth");
   }, [user]);
 
+  console.log("user", user);
+
   useEffect(() => {
-    if (room) initiateSocket(room);
+    if (room) initiateSocket(room, user.email);
 
     subscribeToChat((err: any, messageObject: IMessageObject) => {
       if (err) return;
@@ -115,9 +117,9 @@ const AsymmetricChat = () => {
           <Code>{user.email}</Code>
         </Text>
       )}
-
+      {/* 
       <Heading>Your ID:</Heading>
-      <Heading marginBottom="10px">{mySocketID}</Heading>
+      <Heading marginBottom="10px">{mySocketID}</Heading> */}
       <Heading>Current Room: {room}</Heading>
 
       <Text>Select room:</Text>
@@ -147,7 +149,7 @@ const AsymmetricChat = () => {
                 margin="5px"
                 colorScheme="blue"
               >
-                {user}
+                {listOfConnectedUsers[room][user].userEmail}
               </Button>
             );
           }
