@@ -9,13 +9,13 @@ const uiConfig = {
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
 };
 
-function SignInScreen() {
+const Auth = () => {
   return (
     <VStack height="100vh" justify="center" align="center" spacing="2em">
       <Heading>Encrypted File Sharing Session - Applied Cryptography</Heading>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </VStack>
   );
-}
+};
 
-export default SignInScreen;
+export default Auth;

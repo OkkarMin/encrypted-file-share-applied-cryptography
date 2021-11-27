@@ -32,7 +32,12 @@ const Chat = () => {
   const [cipherKey, setCipherKey] = useState("");
   const [chat, setChat] = useState([]);
   const [file, setFile] = useState<File>();
-  const [user] = useAuthState(auth);
+
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    !loading && !user && (window.location.href = "/auth");
+  }, [user]);
 
   useEffect(() => {
     if (room) initiateSocket(room);

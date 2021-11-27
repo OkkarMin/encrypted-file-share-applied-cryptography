@@ -25,11 +25,9 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 import { IMessageObject } from "../../interface";
 import { toBase64 } from "../utils/toBase64";
-import { Socket } from "socket.io-client";
 
 import { auth } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
 
 const AsymmetricChat = () => {
   const rooms = ["1", "2", "3"];
@@ -42,7 +40,11 @@ const AsymmetricChat = () => {
 
   const [mySocketID, setMySocketID] = useState("");
 
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    !loading && !user && (window.location.href = "/auth");
+  }, [user]);
 
   useEffect(() => {
     if (room) initiateSocket(room);

@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 
 import { auth } from "../utils/firebase";
@@ -9,7 +9,10 @@ const Index = () => {
   const [user, loading, error] = useAuthState(auth);
 
   if (error) return <div>Error: {error.message}</div>;
-  if (!user) useRouter().push("/auth");
+
+  useEffect(() => {
+    !loading && !user && (window.location.href = "/auth");
+  }, [user]);
 
   return (
     <VStack height="100vh" justify="center" align="center" spacing="2em">
