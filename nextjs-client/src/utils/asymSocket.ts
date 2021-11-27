@@ -4,6 +4,10 @@ import { IMessageObject, IAsymmetricMessageObject } from "../../interface";
 
 let socket: Socket;
 
+let listOfConnectedUsers: any;
+const setListOfConnectedUsers = (newList: any) =>
+  (listOfConnectedUsers = newList);
+
 let publicKey: any;
 const setPublicKey = (newKey: any) => (publicKey = newKey);
 
@@ -100,6 +104,7 @@ const connectedUsers = (cb: Function) => {
 
   socket.on("listOfUsers", (listOfUsers: any) => {
     console.log("listOfUsers", listOfUsers);
+    setListOfConnectedUsers(listOfUsers);
     return listOfUsers ? cb(null, listOfUsers, socket.id) : cb(null, {});
   });
 };
@@ -207,7 +212,8 @@ const subscribeToChat = async (cb: Function) => {
       const importsenderPublicVerifyingKey =
         await window.crypto.subtle.importKey(
           "jwk",
-          messageObject.senderExportedPublicVerifyingKey,
+          listOfConnectedUsers[messageObject.room][messageObject.senderID]
+            .exportedPublicVerifyingKey,
           {
             name: "RSASSA-PKCS1-v1_5",
             hash: { name: "SHA-256" },
@@ -215,11 +221,6 @@ const subscribeToChat = async (cb: Function) => {
           false,
           ["verify"]
         );
-
-      console.log(
-        importsenderPublicVerifyingKey,
-        "importsenderPublicVerifyingKey!!!!!!"
-      );
 
       plainBody = await window.crypto.subtle.decrypt(
         {
@@ -237,7 +238,6 @@ const subscribeToChat = async (cb: Function) => {
         messageObject.signature,
         Buffer.from(messageObject.body)
       );
-      console.log("Verified 129308413jr nv9813r", verified);
     } catch (error) {
       // if the key is wrong, we don't want to decrypt the message
       plainBody = undefined;
@@ -274,8 +274,6 @@ const sendAsymmetricMessage = async (
   let encryptedMessage: any;
   let signature: any;
 
-  console.log(Buffer.from(messageObject.body, "base64"), "bufeerrrr");
-
   const iv = window.crypto.getRandomValues(new Uint8Array(16));
 
   try {
@@ -289,8 +287,6 @@ const sendAsymmetricMessage = async (
       Buffer.from(messageObject.body)
     );
 
-    console.log("privateKey", privateKey);
-
     signature = await window.crypto.subtle.sign(
       { name: "RSASSA-PKCS1-v1_5" },
       privateSigningKey,
@@ -300,11 +296,13 @@ const sendAsymmetricMessage = async (
     console.log("error", error);
   }
 
-  const encryptedMessageObject = {
+  const encryptedMessageObject: IAsymmetricMessageObject = {
     ...messageObject,
     body: encryptedMessage,
     iv,
     signature,
+    room,
+    senderID: socket.id,
   };
 
   socket.emit("chat", {

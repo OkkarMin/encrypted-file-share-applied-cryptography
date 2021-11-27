@@ -3,7 +3,6 @@ export interface IMessageObject {
   body: any;
   mimeType?: string;
   fileName?: string;
-  senderExportedPublicVerifyingKey?: any;
 }
 
 export interface IAsymmetricMessageObject {
@@ -11,7 +10,8 @@ export interface IAsymmetricMessageObject {
   body: string;
   iv: any;
   signature: any;
-  senderExportedPublicVerifyingKey: any;
+  senderID: string;
+  room: string;
   mimeType?: string;
   fileName?: string;
 }

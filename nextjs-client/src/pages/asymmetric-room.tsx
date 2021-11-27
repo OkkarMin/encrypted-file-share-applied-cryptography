@@ -77,15 +77,11 @@ const AsymmetricChat = () => {
         body: await toBase64(file),
         mimeType: file.type,
         fileName: file.name,
-        senderExportedPublicVerifyingKey:
-          listOfConnectedUsers[room][mySocketID].exportedPublicVerifyingKey,
       };
     } else {
       messageObject = {
         type: "text",
         body: message,
-        senderExportedPublicVerifyingKey:
-          listOfConnectedUsers[room][mySocketID].exportedPublicVerifyingKey,
       };
     }
 
