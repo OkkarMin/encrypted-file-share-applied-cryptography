@@ -16,17 +16,17 @@
 </details>
 <p>
 
-Proof-of-concept application built using NextJS, Express and SocketIO to enable secure file sharing between sender and receiver
+Proof-of-concept application built using NextJS, Express and Socket.io to enable secure file sharing between sender and receiver
 
 ## Demo
 
-{insert demo section here}
+{ insert demo video here }
 
 ## Tech Stack
 
-**Client**: [NextJS](http://nextjs.org), [ChakraUI](http://chakra-ui.com)
+**Client**: [NextJS](http://nextjs.org) a React framework, [ChakraUI](http://chakra-ui.com) user interface library
 
-**Server**: Node, Express
+**Server**: Node, Express, Socket.io
 
 ## Folder And File Structure
 
@@ -82,11 +82,11 @@ npm run release
 ## TODO
 
 - [x] Encrypted text messaging between two clients
-- [ ] Encrypted file sharing between two clients
-- [ ] UI Improvements
-  - [ ] Shows who is online in the room currently
-  - [ ] Shows what % of uploaded/downloaded file
-- [ ] Hosting on AWS Elastic Bean Stalk with HTTPS certificate
+- [x] Encrypted file sharing between two clients
+- [x] UI Improvements
+  - [x] Shows who is online in the room currently
+  - [ ] Shows percentage(%) of uploaded/downloaded file
+- [x] Hosting on AWS Lightsail with HTTPS certificate
 
 ## Authors
 
