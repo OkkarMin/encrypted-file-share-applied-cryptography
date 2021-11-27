@@ -1,6 +1,6 @@
 {
   "name": "encrypted-file-share-applied-cryptography",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "scripts": {
     "release": "standard-version",
     "installDeps": "cd socket-server && npm install && cd ../nextjs-client && npm install && cd .. && npm install",
