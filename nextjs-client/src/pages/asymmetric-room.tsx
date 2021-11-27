@@ -12,6 +12,7 @@ import {
 
 import {
   Container,
+  Stack,
   Heading,
   Button,
   Input,
@@ -105,6 +106,8 @@ const AsymmetricChat = () => {
 
   return (
     <Container>
+      <Heading>Your ID:</Heading>
+      <Heading marginBottom="10px">{mySocketID}</Heading>
       <Heading>Current Room: {room}</Heading>
 
       <Text>Select room:</Text>
