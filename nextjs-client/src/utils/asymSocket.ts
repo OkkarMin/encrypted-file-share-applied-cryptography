@@ -259,13 +259,30 @@ const subscribeToChat = async (cb: Function) => {
           ["verify"]
         );
 
+      // simulate attacker modified message
+      const modifiedMessage = "I changed your message";
+
+      // encrypt modified message with sharedKey
+      // assume attacker is able to get sharedKey
+      const modifiedEncryptedMessage = await window.crypto.subtle.encrypt(
+        {
+          name: "AES-CBC",
+          length: 256,
+          iv: messageObject.iv,
+        },
+        sharedKey,
+        Buffer.from(modifiedMessage)
+      );
+
       // verify if encrypted message is authentic
       verified = await window.crypto.subtle.verify(
         "RSASSA-PKCS1-v1_5",
         importsenderPublicVerifyingKey,
         messageObject.signature,
-        Buffer.from(messageObject.body)
+        Buffer.from(modifiedEncryptedMessage)
       );
+
+      console.log("verified", verified);
 
       // decrypt message
       plainBody = await window.crypto.subtle.decrypt(
@@ -275,8 +292,10 @@ const subscribeToChat = async (cb: Function) => {
           iv: messageObject.iv,
         },
         sharedKey,
-        Buffer.from(messageObject.body)
+        Buffer.from(modifiedEncryptedMessage)
       );
+
+      console.log("plainBody", plainBody);
     } catch (error) {
       // if the key is wrong, we don't want to decrypt the message
       plainBody = undefined;
@@ -284,6 +303,8 @@ const subscribeToChat = async (cb: Function) => {
 
     const decryptedMessageObject = {
       ...messageObject,
+      // attack change message type to text
+      type: "text",
       body: utf8decoder.decode(plainBody),
       verified,
     };
