@@ -23,7 +23,7 @@ const setPublicVerifyingKey = (newKey: any) => (publicVerifyingKey = newKey);
 let privateSigningKey: any;
 const setPrivateSigningKey = (newKey: any) => (privateSigningKey = newKey);
 
-const initiateSocket = async (room: string) => {
+const initiateSocket = async (room: string, email: string) => {
   const socketServer =
     process.env.NODE_ENV == "production"
       ? "encrypted-fileshare.ml"
@@ -85,6 +85,7 @@ const initiateSocket = async (room: string) => {
                 room,
                 exportedPublicKey,
                 exportedPublicVerifyingKey,
+                email,
               });
           });
       });

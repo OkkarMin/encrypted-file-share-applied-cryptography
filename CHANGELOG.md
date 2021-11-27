@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.3.0...v1.4.0) (2021-11-27)
+
+
+### Features
+
+* :sparkles: Add Google OAuth signin ([333abfd](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/333abfd57815abee0ee9905a892e0200e332152e))
+
+
+### Bug Fixes
+
+* :bug: Fix redirect on protected pages ([232dae2](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/232dae2b02eba0a0fc3f6bcc3fe33a0ad785fb67))
+
 ## [1.3.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.2.0...v1.3.0) (2021-11-27)
 
 

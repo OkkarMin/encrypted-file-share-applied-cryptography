@@ -12,7 +12,7 @@ import {
 
 import {
   Container,
-  Stack,
+  Code,
   Heading,
   Button,
   Input,
@@ -25,9 +25,9 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 import { IMessageObject } from "../../interface";
 import { toBase64 } from "../utils/toBase64";
-import { Socket } from "socket.io-client";
 
-let socket: Socket;
+import { auth } from "../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const AsymmetricChat = () => {
   const rooms = ["1", "2", "3"];
@@ -40,8 +40,16 @@ const AsymmetricChat = () => {
 
   const [mySocketID, setMySocketID] = useState("");
 
+  const [user, loading] = useAuthState(auth);
+
   useEffect(() => {
-    if (room) initiateSocket(room);
+    !loading && !user && (window.location.href = "/auth");
+  }, [user]);
+
+  console.log("user", user);
+
+  useEffect(() => {
+    if (room) initiateSocket(room, user.email);
 
     subscribeToChat((err: any, messageObject: IMessageObject) => {
       if (err) return;
@@ -103,8 +111,15 @@ const AsymmetricChat = () => {
 
   return (
     <Container>
+      {user && (
+        <Text>
+          You are: <Code>{user.displayName}</Code> with email{" "}
+          <Code>{user.email}</Code>
+        </Text>
+      )}
+      {/* 
       <Heading>Your ID:</Heading>
-      <Heading marginBottom="10px">{mySocketID}</Heading>
+      <Heading marginBottom="10px">{mySocketID}</Heading> */}
       <Heading>Current Room: {room}</Heading>
 
       <Text>Select room:</Text>
@@ -134,7 +149,7 @@ const AsymmetricChat = () => {
                 margin="5px"
                 colorScheme="blue"
               >
-                {user}
+                {listOfConnectedUsers[room][user].userEmail}
               </Button>
             );
           }

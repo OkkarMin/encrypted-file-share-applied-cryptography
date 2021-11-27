@@ -1,11 +1,16 @@
 # Encrypted File Share
 
+👉 [https://encrypted-fileshare.ml](https://encrypted-fileshare.ml) 👈
+
+✅ Proof-of-concept application built using NextJS, Express and Socket.io to enable secure file sharing between two clients, sender and receiver.
+
 <details open>
     <summary>Table of Contents</summary>
 <ul>
     <li><a href="#demo">Demo</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
     <li><a href="#folder-and-file-structure">Folder And File Structure</a></li>
+    <li><a href="#folder-and-file-structure">Explanation of the app</a></li>
     <li><a href="#run-locally-for-development">Run Locally (for development)</a></li>
     <li><a href="#hosting-for-production">Hosting (for production)</a></li>
     <li><a href="#automatically-generating-changelog">Automatically Generating Changelog</a></li>
@@ -16,21 +21,40 @@
 </details>
 <p>
 
-Proof-of-concept application built using NextJS, Express and Socket.io to enable secure file sharing between sender and receiver
-
 ## Demo
 
 { insert demo video here }
 
 ## Tech Stack
 
-**Client**: [NextJS](http://nextjs.org) a React framework, [ChakraUI](http://chakra-ui.com) user interface library
+**Client**:
 
-**Server**: Node, Express, Socket.io
+- [NextJS](http://nextjs.org) a React framework
+- [ChakraUI](http://chakra-ui.com) user interface library
+
+**Server**:
+
+- [NodeJS](https://nodejs.org)
+- [Express](https://expressjs.com)
+- Socket.io
+
+**Crytography**:
+
+- Symmetric encryption: [crypto-js](https://cryptojs.gitbook.io/docs/)
+
+  - AES-256 for symmetric key
+
+- Asymmetric encryption: [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)
+
+  - AES-CBC-256 for symmetric key
+  - RSA-OAEP-SHA256 for encryption/decryption of the symmetric key
+  - RSASSA-PKCS1-v1_5-SHA-256 for signing/verifying of the payload
 
 ## Folder And File Structure
 
 {insert folder/file tree section here}
+
+## Explanation of the app
 
 ## Run Locally (for development)
 
