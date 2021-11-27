@@ -96,7 +96,8 @@ const AsymmetricChat = () => {
     await sendSharedKey(
       receipient,
       listOfConnectedUsers[room][receipient].exportedPublicKey,
-      createdSharedKey
+      createdSharedKey,
+      room
     );
   };
 

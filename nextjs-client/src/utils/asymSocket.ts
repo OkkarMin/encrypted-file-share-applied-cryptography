@@ -129,7 +129,8 @@ const makeSharedKey = async () => {
 const sendSharedKey = async (
   sendToTarget: string,
   sendToTargetPublicKey: any,
-  createdSharedKey: any
+  createdSharedKey: any,
+  room: string
 ) => {
   // convert shared key to exportable format
   const exportableSharedKey = await window.crypto.subtle.exportKey(
@@ -159,14 +160,50 @@ const sendSharedKey = async (
     exportableSharedKey
   );
 
-  socket.emit("sendSharedKey", { sendToTarget, encryptedSharedKey });
+  // sign shared key
+  const signature = await window.crypto.subtle.sign(
+    { name: "RSASSA-PKCS1-v1_5" },
+    privateSigningKey,
+    encryptedSharedKey
+  );
+
+  socket.emit("sendSharedKey", {
+    sendToTarget,
+    encryptedSharedKey,
+    signature,
+    room,
+  });
 };
 
 // receipient to recieve shared key from socket
 const receieveSharedKey = (cb: Function) => {
   if (!socket) return true;
 
-  socket.on("recieveSharedKey", async (encryptedSharedKey: any) => {
+  socket.on("recieveSharedKey", async (data: any) => {
+    const { sendToTarget, encryptedSharedKey, signature, room } = data;
+
+    // conert public key of sender to usable format
+    const sendToTargetUsableVerifyingPublicKey =
+      await window.crypto.subtle.importKey(
+        "jwk",
+        listOfConnectedUsers[room][sendToTarget].exportedPublicVerifyingKey,
+        {
+          name: "RSASSA-PKCS1-v1_5",
+          hash: { name: "SHA-256" },
+        },
+
+        false,
+        ["verify"]
+      );
+
+    // verify signature of shared key
+    const verified = await window.crypto.subtle.verify(
+      "RSASSA-PKCS1-v1_5",
+      sendToTargetUsableVerifyingPublicKey,
+      signature,
+      encryptedSharedKey
+    );
+
     // decrypt shared key using receipient private key
     const decryptedSharedKey = await window.crypto.subtle.decrypt(
       {
@@ -191,7 +228,7 @@ const receieveSharedKey = (cb: Function) => {
 
     setSharedKey(importDecryptedSharedKey);
 
-    return importDecryptedSharedKey
+    return importDecryptedSharedKey && verified
       ? cb(null, importDecryptedSharedKey)
       : cb(null, {});
   });
@@ -222,6 +259,15 @@ const subscribeToChat = async (cb: Function) => {
           ["verify"]
         );
 
+      // verify if encrypted message is authentic
+      verified = await window.crypto.subtle.verify(
+        "RSASSA-PKCS1-v1_5",
+        importsenderPublicVerifyingKey,
+        messageObject.signature,
+        Buffer.from(messageObject.body)
+      );
+
+      // decrypt message
       plainBody = await window.crypto.subtle.decrypt(
         {
           name: "AES-CBC",
@@ -229,13 +275,6 @@ const subscribeToChat = async (cb: Function) => {
           iv: messageObject.iv,
         },
         sharedKey,
-        Buffer.from(messageObject.body)
-      );
-
-      verified = await window.crypto.subtle.verify(
-        "RSASSA-PKCS1-v1_5",
-        importsenderPublicVerifyingKey,
-        messageObject.signature,
         Buffer.from(messageObject.body)
       );
     } catch (error) {
