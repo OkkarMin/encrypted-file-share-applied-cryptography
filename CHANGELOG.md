@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.2.0...v1.3.0) (2021-11-27)
+
+
+### Features
+
+* :sparkles: Add assymmetric rooms ([a492544](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/a492544a7b71c84b0beea73e7687934ad2bbc932))
+* :sparkles: Add Button to choose receipient ([ebb5760](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/ebb5760754cd0b767486e8e1843a90cd0960118e))
+* :sparkles: Add display for own id ([66387a9](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/66387a9c636e9012a8692284d93094cb24b572c2))
+* :sparkles: Add key sharing for sender and receipient ([5c48698](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/5c48698d77c7d17959f36135b2d65b5308926590))
+* :sparkles: Add send sharedKey to receipient ([39ea91c](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/39ea91c1d3dc174afad094efe6e88506c4d0d296))
+* :sparkles: Add signature and verification of shared key ([6fc2360](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/6fc23602a28d55b4d92f9baa23b065958cd3049c))
+* :sparkles: Convert images to base64 ([4eb95bf](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/4eb95bfb9cc1198505004b38a6f4306bb1558868))
+* Add signing and verificaiton ([11c0e05](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/11c0e057c749601e603ecc9aea3ac65ba1aab528))
+
+
+### Bug Fixes
+
+* :bug: Fix error for users that arent the receipient ([b9408b6](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/b9408b6571067c0cb1f239992ff89ed73ccdbfa3))
+* :bug: Remove port number for 'prod' ([576bf8e](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/576bf8e87c6fd2a0f31f0a8e2b33f50a41d8339a))
+
 ## [1.2.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.1.0...v1.2.0) (2021-10-20)
 
 
