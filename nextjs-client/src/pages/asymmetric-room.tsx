@@ -12,7 +12,7 @@ import {
 
 import {
   Container,
-  Stack,
+  Code,
   Heading,
   Button,
   Input,
@@ -27,7 +27,9 @@ import { IMessageObject } from "../../interface";
 import { toBase64 } from "../utils/toBase64";
 import { Socket } from "socket.io-client";
 
-let socket: Socket;
+import { auth } from "../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 const AsymmetricChat = () => {
   const rooms = ["1", "2", "3"];
@@ -39,6 +41,8 @@ const AsymmetricChat = () => {
   const [sendToTarget, setSendToTarget] = useState<string>("-");
 
   const [mySocketID, setMySocketID] = useState("");
+
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     if (room) initiateSocket(room);
@@ -103,6 +107,13 @@ const AsymmetricChat = () => {
 
   return (
     <Container>
+      {user && (
+        <Text>
+          You are: <Code>{user.displayName}</Code> with email{" "}
+          <Code>{user.email}</Code>
+        </Text>
+      )}
+
       <Heading>Your ID:</Heading>
       <Heading marginBottom="10px">{mySocketID}</Heading>
       <Heading>Current Room: {room}</Heading>

@@ -16,10 +16,14 @@ import {
   HStack,
   VStack,
   Image,
+  Code,
 } from "@chakra-ui/react";
 
 import { IMessageObject } from "../../interface";
 import { toBase64 } from "../utils/toBase64";
+
+import { auth } from "../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Chat = () => {
   const rooms = ["1", "2", "3"];
@@ -28,6 +32,7 @@ const Chat = () => {
   const [cipherKey, setCipherKey] = useState("");
   const [chat, setChat] = useState([]);
   const [file, setFile] = useState<File>();
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     if (room) initiateSocket(room);
@@ -75,6 +80,13 @@ const Chat = () => {
   return (
     <Container>
       <Heading>Current Room: {room}</Heading>
+
+      {user && (
+        <Text>
+          You are: <Code>{user.displayName}</Code> with email{" "}
+          <Code>{user.email}</Code>
+        </Text>
+      )}
 
       <HStack>
         <Text>Select room:</Text>
