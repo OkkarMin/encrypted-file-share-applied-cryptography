@@ -25,7 +25,7 @@ import { toBase64 } from "../utils/toBase64";
 import { auth } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const Chat = () => {
+const SymmetricChat = () => {
   const rooms = ["1", "2", "3"];
   const [room, setRoom] = useState(rooms[0]);
   const [message, setMessage] = useState("");
@@ -140,4 +140,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default SymmetricChat;

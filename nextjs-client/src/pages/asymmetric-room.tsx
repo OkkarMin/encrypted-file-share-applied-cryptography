@@ -113,13 +113,10 @@ const AsymmetricChat = () => {
     <Container>
       {user && (
         <Text>
-          You are: <Code>{user.displayName}</Code> with email{" "}
+          You are: <Code>{user.displayName}</Code> with email
           <Code>{user.email}</Code>
         </Text>
       )}
-      {/* 
-      <Heading>Your ID:</Heading>
-      <Heading marginBottom="10px">{mySocketID}</Heading> */}
       <Heading>Current Room: {room}</Heading>
 
       <Text>Select room:</Text>
@@ -160,7 +157,7 @@ const AsymmetricChat = () => {
       {sendToTarget === "-" ? (
         <Text>Click on connected user to select who to send item to</Text>
       ) : (
-        <Heading size="md">{sendToTarget}</Heading>
+        <Text>{user.email + ":" + sendToTarget}</Text>
       )}
 
       <Heading marginTop="5vh">Live Chat:</Heading>
