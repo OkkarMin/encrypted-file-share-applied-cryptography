@@ -277,6 +277,7 @@ We are following [Conventional Commits](https://conventionalcommits.org/) and [s
 Run the following command to generate Changelog
 
 ```bash
+cd encrypted-file-share-applied-cryptography
 npm run release
 ```
 
