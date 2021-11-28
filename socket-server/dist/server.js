@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
-const path = require("path");
 const PORT = process.env.PORT || 2000;
 const app = express();
 app.set("port", PORT);
@@ -19,9 +18,6 @@ let listOfUsers = {
     2: {},
     3: {},
 };
-app.get("/", (req, res) => {
-    res.sendFile(path.resolve("./client/index.html"));
-});
 io.on("connection", (socket) => {
     console.log(`Connected: ${socket.id}`);
     socket.on("disconnect", () => {

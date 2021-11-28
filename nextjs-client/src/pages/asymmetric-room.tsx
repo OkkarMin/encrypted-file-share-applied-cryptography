@@ -146,7 +146,7 @@ const AsymmetricChat = () => {
                 margin="5px"
                 colorScheme="blue"
               >
-                {listOfConnectedUsers[room][user].userEmail}
+                {listOfConnectedUsers[room][user].userEmail + ":" + mySocketID}
               </Button>
             );
           }
