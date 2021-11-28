@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import Link from "next/link";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 
-import firebase, { auth } from "../utils/firebase";
+import { auth } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const Index = () => {
