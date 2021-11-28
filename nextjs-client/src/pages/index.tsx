@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 
-import { auth } from "../utils/firebase";
+import firebase, { auth } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const Index = () => {
@@ -10,9 +10,7 @@ const Index = () => {
 
   if (error) return <div>Error: {error.message}</div>;
 
-  useEffect(() => {
-    !loading && !user && (window.location.href = "/auth");
-  }, [user]);
+  !loading && !user && (window.location.href = "/auth");
 
   return (
     <VStack height="100vh" justify="center" align="center" spacing="2em">

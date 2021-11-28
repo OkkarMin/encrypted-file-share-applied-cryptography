@@ -42,9 +42,7 @@ const AsymmetricChat = () => {
 
   const [user, loading] = useAuthState(auth);
 
-  useEffect(() => {
-    !loading && !user && (window.location.href = "/auth");
-  }, [user]);
+  !loading && !user && (window.location.href = "/auth");
 
   console.log("user", user);
 
