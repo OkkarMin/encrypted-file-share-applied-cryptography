@@ -1,6 +1,5 @@
 import * as express from "express";
 import { Socket } from "socket.io";
-import * as path from "path";
 
 const PORT = process.env.PORT || 2000;
 
@@ -22,10 +21,6 @@ let listOfUsers: any = {
   2: {},
   3: {},
 };
-
-app.get("/", (req: any, res: any) => {
-  res.sendFile(path.resolve("./client/index.html"));
-});
 
 io.on("connection", (socket: Socket) => {
   console.log(`Connected: ${socket.id}`);
