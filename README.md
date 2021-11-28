@@ -7,15 +7,15 @@
 <details open>
     <summary>Table of Contents</summary>
 <ul>
-    <li><a href="#-demo-video">Demo Video</a></li>
-    <li><a href="#-tech-stack">Tech Stack</a></li>
-    <li><a href="#-folder-and-file-structure">Folder And File Structure</a></li>
-    <li><a href="#-architecture-of-the-app">Architecture Of The App</a></li>
-    <li><a href="#-run-locally-for-development">Run Locally (for development)</a></li>
-    <li><a href="#-hosting-for-production">Hosting (for production)</a></li>
-    <li><a href="#-automatically-generating-changelog">Automatically Generating Changelog</a></li>
-    <li><a href="#-changelog">Changelog</a></li>
-    <li><a href="#-authors">Authors</a></li>
+    <li><a href="#-demo-video">📹 Demo Video</a></li>
+    <li><a href="#-tech-stack">🥞 Tech Stack</a></li>
+    <li><a href="#-folder-and-file-structure">🗂 Folder And File Structure</a></li>
+    <li><a href="#-architecture-of-the-app">🏛 Architecture Of The App</a></li>
+    <li><a href="#-run-locally-for-development">👨🏻‍💻 Run Locally (for development)</a></li>
+    <li><a href="#-hosting-for-production">🌍 Hosting (for production)</a></li>
+    <li><a href="#-automatically-generating-changelog">📝 Automatically Generating Changelog</a></li>
+    <li><a href="#-changelog">🪵 Changelog</a></li>
+    <li><a href="#-authors">✍️ Authors</a></li>
 </ul>
 </details>
 <p>
