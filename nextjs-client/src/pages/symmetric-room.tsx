@@ -35,9 +35,7 @@ const SymmetricChat = () => {
 
   const [user, loading] = useAuthState(auth);
 
-  useEffect(() => {
-    !loading && !user && (window.location.href = "/auth");
-  }, [user]);
+  !loading && !user && (window.location.href = "/auth");
 
   useEffect(() => {
     if (room) initiateSocket(room);
