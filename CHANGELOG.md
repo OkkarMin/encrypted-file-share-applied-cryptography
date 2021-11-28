@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.4.0...v1.5.0) (2021-11-28)
+
+
+### Features
+
+* :sparkles: Add display users by email ([ddbf84e](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/ddbf84e0a71e0347b610414b9e215400636ff21f))
+
+
+### Bug Fixes
+
+* :bug: Add socketID to connected users UI ([b4d8657](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/commit/b4d86572511feaf1b679c8b1588c69994d1294c8))
+
 ## [1.4.0](https://github.com/OkkarMin/encrypted-file-share-applied-cryptography/compare/v1.3.0...v1.4.0) (2021-11-27)
 
 
