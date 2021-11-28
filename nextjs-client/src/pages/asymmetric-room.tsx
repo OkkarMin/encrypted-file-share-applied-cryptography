@@ -155,7 +155,11 @@ const AsymmetricChat = () => {
       {sendToTarget === "-" ? (
         <Text>Click on connected user to select who to send item to</Text>
       ) : (
-        <Text>{user.email + ":" + sendToTarget}</Text>
+        <Text>
+          {listOfConnectedUsers[room][sendToTarget].userEmail +
+            ":" +
+            sendToTarget}
+        </Text>
       )}
 
       <Heading marginTop="5vh">Live Chat:</Heading>
