@@ -1,4 +1,4 @@
-# 📄 🔐 ☁️ ⏩ Encrypted File Share
+# 📄 🔒 ☁️ ⏩ Encrypted File Share 📥 🔐 📄
 
 👉 [https://encrypted-fileshare.ml](https://encrypted-fileshare.ml) 👈
 
@@ -7,15 +7,15 @@
 <details open>
     <summary>Table of Contents</summary>
 <ul>
-    <li><a href="#demo-video">Demo Video</a></li>
-    <li><a href="#tech-stack">Tech Stack</a></li>
-    <li><a href="#folder-and-file-structure">Folder And File Structure</a></li>
-    <li><a href="#architecture-of-the-app">Architecture Of The App</a></li>
-    <li><a href="#run-locally-for-development">Run Locally (for development)</a></li>
-    <li><a href="#hosting-for-production">Hosting (for production)</a></li>
-    <li><a href="#automatically-generating-changelog">Automatically Generating Changelog</a></li>
-    <li><a href="#changelog">Changelog</a></li>
-    <li><a href="#authors">Authors</a></li>
+    <li><a href="#-demo-video">Demo Video</a></li>
+    <li><a href="#-tech-stack">Tech Stack</a></li>
+    <li><a href="#-folder-and-file-structure">Folder And File Structure</a></li>
+    <li><a href="#-architecture-of-the-app">Architecture Of The App</a></li>
+    <li><a href="#-run-locally-for-development">Run Locally (for development)</a></li>
+    <li><a href="#-hosting-for-production">Hosting (for production)</a></li>
+    <li><a href="#-automatically-generating-changelog">Automatically Generating Changelog</a></li>
+    <li><a href="#-changelog">Changelog</a></li>
+    <li><a href="#-authors">Authors</a></li>
 </ul>
 </details>
 <p>
@@ -73,7 +73,8 @@ encrypted-file-share-applied-cryptography
 │  │  │  ├─ asymSocket.ts
 │  │  │  ├─ cryptography.ts
 │  │  │  ├─ firebase.ts
-│  │  │  ├─ firebaseConfig.ts
+│  │  │  ├─ firebaseConfig.ts          # replace with your own firebase credentials
+│  │  │  ├─ firebaseConfig.example.ts  # example firebase credentials
 │  │  │  ├─ socket.ts
 │  │  │  └─ toBase64.ts
 │  │  └─ theme.tsx                     # set the theme for the client
@@ -135,7 +136,7 @@ encrypted-file-share-applied-cryptography
 
 ## 👨🏻‍💻 Run Locally (for development)
 
-> You need to obtain `nextjs-client/src/utils/firebaseConfig.ts` from authors, file has been omitted from repository for it contains credentials to access firebase OR! you can take a look at `firebaseConfig.example.ts` and replace it with your own firebase project credentials. [Click here to learn how to get your own firebase credentials](https://firebase.google.com/docs/web/setup)
+> You need to obtain `nextjs-client/src/utils/firebaseConfig.ts` from authors, file has been omitted from repository for it contains credentials to access firebase OR! you can take a look at [firebaseConfig.example.ts](./nextjs-client/src/utils/firebaseConfig.example.ts) and replace it with your own firebase project credentials. [Click here to learn how to get your own firebase credentials](https://firebase.google.com/docs/web/setup)
 
 Clone the project
 
@@ -167,6 +168,11 @@ npm run dev
 ## 🌍 Hosting (for production)
 
 Client and Server has been dockerized for ease of hosting. `docker-compose.yml` ties two Dockerfiles together to expose client and server at the same time.
+
+```bash
+cd encrypted-file-share-applied-cryptography
+docker-compose up --build
+```
 
 ### Client Dockerfile (nextjs-client/Dockerfile)
 
